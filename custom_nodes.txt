@@ -1,0 +1,10 @@
+# Custom node baked into the image. ComfyUI cannot load custom nodes from a network volume.
+# Format: repo_url commit
+#
+# Pinned to a commit. Installing by registry name would pick up whatever is current,
+# and this workflow passes inputs by name.
+#
+# The node is registered as "RIFE VFI", with a space.
+# Install requirements-no-cupy.txt. The checkpoint rife49.pth is downloaded by the Dockerfile.
+
+https://github.com/Fannovel16/ComfyUI-Frame-Interpolation.git 26545cc2dd95bc3d27f056016300673bdeee78f5

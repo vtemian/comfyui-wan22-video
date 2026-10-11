@@ -1,0 +1,47 @@
+# Default weights for workflows/wan22_t2v.json.
+#
+# Paths are relative to the ComfyUI models directory. They use unet/ and clip/,
+# not diffusion_models/ and text_encoders/: the worker-comfyui extra_model_paths.yaml
+# has no keys for the latter two, and folder_paths.map_legacy maps unet to
+# diffusion_models and clip to text_encoders.
+#
+# Audio models are intentionally absent. See LICENSES.md.
+#
+# Download with: ./download_models.sh /runpod-volume/models
+
+diffusion_models:
+  wan22_t2v_high_noise_fp8:
+    url: "https://huggingface.co/Comfy-Org/Wan_2.2_ComfyUI_Repackaged/resolve/main/split_files/diffusion_models/wan2.2_t2v_high_noise_14B_fp8_scaled.safetensors"
+    path: "unet/wan2.2_t2v_high_noise_14B_fp8_scaled.safetensors"
+    size_gb: 14.29
+
+  wan22_t2v_low_noise_fp8:
+    url: "https://huggingface.co/Comfy-Org/Wan_2.2_ComfyUI_Repackaged/resolve/main/split_files/diffusion_models/wan2.2_t2v_low_noise_14B_fp8_scaled.safetensors"
+    path: "unet/wan2.2_t2v_low_noise_14B_fp8_scaled.safetensors"
+    size_gb: 14.29
+
+# Both LoRAs are required. Loading one alone looks like a broken model.
+# Do not mix a high-noise file from one release with a low-noise file from another.
+loras:
+  wan22_lightning_v11_high_noise:
+    url: "https://huggingface.co/Comfy-Org/Wan_2.2_ComfyUI_Repackaged/resolve/main/split_files/loras/wan2.2_t2v_lightx2v_4steps_lora_v1.1_high_noise.safetensors"
+    path: "loras/wan2.2_t2v_lightx2v_4steps_lora_v1.1_high_noise.safetensors"
+    size_gb: 1.23
+
+  wan22_lightning_v11_low_noise:
+    url: "https://huggingface.co/Comfy-Org/Wan_2.2_ComfyUI_Repackaged/resolve/main/split_files/loras/wan2.2_t2v_lightx2v_4steps_lora_v1.1_low_noise.safetensors"
+    path: "loras/wan2.2_t2v_lightx2v_4steps_lora_v1.1_low_noise.safetensors"
+    size_gb: 1.23
+
+text_encoders:
+  umt5_xxl_fp8_scaled:
+    url: "https://huggingface.co/Comfy-Org/Wan_2.2_ComfyUI_Repackaged/resolve/main/split_files/text_encoders/umt5_xxl_fp8_e4m3fn_scaled.safetensors"
+    path: "clip/umt5_xxl_fp8_e4m3fn_scaled.safetensors"
+    size_gb: 6.74
+
+# A14B pairs with the Wan 2.1 VAE. wan2.2_vae belongs to the 5B model only.
+vae:
+  wan21_vae:
+    url: "https://huggingface.co/Comfy-Org/Wan_2.2_ComfyUI_Repackaged/resolve/main/split_files/vae/wan_2.1_vae.safetensors"
+    path: "vae/wan_2.1_vae.safetensors"
+    size_gb: 0.25

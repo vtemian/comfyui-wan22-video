@@ -1,0 +1,188 @@
+{
+  "title": "Wan 2.2 text to video",
+  "description": "Silent text-to-video from a prompt. Downloads open weights on first start (about 38 GB) and returns an mp4. No audio model.",
+  "type": "serverless",
+  "category": "video",
+  "config": {
+    "runsOn": "GPU",
+    "containerDiskInGb": 100,
+    "gpuCount": 1,
+    "gpuIds": "ADA_48_PRO,AMPERE_80,ADA_80_PRO,HOPPER_141",
+    "allowedCudaVersions": ["12.8"],
+    "presets": [
+      {
+        "name": "480p with interpolation",
+        "defaults": {
+          "COMFY_RIFE": true
+        }
+      },
+      {
+        "name": "480p without interpolation",
+        "defaults": {
+          "COMFY_RIFE": false
+        }
+      }
+    ],
+    "env": [
+      {
+        "key": "COMFY_RIFE",
+        "input": {
+          "type": "boolean",
+          "name": "Frame interpolation",
+          "description": "Double the frame rate after sampling. Off encodes at 16 fps.",
+          "default": true,
+          "trueValue": "1",
+          "falseValue": "0"
+        }
+      },
+      {
+        "key": "HF_TOKEN",
+        "input": {
+          "name": "Hugging Face token",
+          "type": "string",
+          "description": "Optional. The default weights are public. A token raises the Hub rate limit.",
+          "default": "",
+          "advanced": true
+        }
+      },
+      {
+        "key": "MODEL_DIR",
+        "input": {
+          "name": "Model directory",
+          "type": "string",
+          "description": "Where weights are stored. Point this at a network volume to avoid a fresh download on every cold start.",
+          "default": "/runpod-volume/models",
+          "advanced": true
+        }
+      },
+      {
+        "key": "SKIP_MODEL_DOWNLOAD",
+        "input": {
+          "type": "boolean",
+          "name": "Skip model download",
+          "description": "Turn on only when MODEL_DIR already contains the weights.",
+          "default": false,
+          "trueValue": "1",
+          "falseValue": "0",
+          "advanced": true
+        }
+      },
+      {
+        "key": "DOWNLOAD_OPTIONAL_LORAS",
+        "input": {
+          "type": "boolean",
+          "name": "Download optional LoRAs",
+          "description": "Also fetch the v2.0 and 250928 Lightning pairs. About 6 GB more.",
+          "default": false,
+          "trueValue": "1",
+          "falseValue": "0",
+          "advanced": true
+        }
+      },
+      {
+        "key": "COMFY_LORA_HIGH",
+        "input": {
+          "name": "High-noise LoRA filename",
+          "type": "string",
+          "description": "Filename inside models/loras. Must be the high-noise half of the same pair as the low-noise file.",
+          "default": "wan2.2_t2v_lightx2v_4steps_lora_v1.1_high_noise.safetensors",
+          "advanced": true
+        }
+      },
+      {
+        "key": "COMFY_LORA_LOW",
+        "input": {
+          "name": "Low-noise LoRA filename",
+          "type": "string",
+          "description": "Filename inside models/loras. Must be the low-noise half of the same pair as the high-noise file.",
+          "default": "wan2.2_t2v_lightx2v_4steps_lora_v1.1_low_noise.safetensors",
+          "advanced": true
+        }
+      },
+      {
+        "key": "RETURN_BASE64",
+        "input": {
+          "type": "boolean",
+          "name": "Return mp4 in the response",
+          "description": "Turn off only when S3 is configured and you do not want the bytes inline.",
+          "default": true,
+          "trueValue": "1",
+          "falseValue": "0",
+          "advanced": true
+        }
+      },
+      {
+        "key": "S3_ENDPOINT_URL",
+        "input": {
+          "name": "S3 endpoint URL",
+          "type": "string",
+          "description": "Optional. Leave empty to return the mp4 inline. Set all four S3 variables or none.",
+          "default": "",
+          "advanced": true
+        }
+      },
+      {
+        "key": "S3_BUCKET_NAME",
+        "input": {
+          "name": "S3 bucket",
+          "type": "string",
+          "description": "Bucket that receives the mp4 when S3 is configured.",
+          "default": "",
+          "advanced": true
+        }
+      },
+      {
+        "key": "S3_ACCESS_KEY_ID",
+        "input": {
+          "name": "S3 access key",
+          "type": "string",
+          "description": "Access key for the bucket above.",
+          "default": "",
+          "advanced": true
+        }
+      },
+      {
+        "key": "S3_SECRET_ACCESS_KEY",
+        "input": {
+          "name": "S3 secret key",
+          "type": "string",
+          "description": "Secret key for the bucket above.",
+          "default": "",
+          "advanced": true
+        }
+      },
+      {
+        "key": "S3_PUBLIC_URL",
+        "input": {
+          "name": "Public URL base",
+          "type": "string",
+          "description": "Optional base for video_url, with no trailing slash. When empty, the endpoint and bucket name are used.",
+          "default": "",
+          "advanced": true
+        }
+      },
+      {
+        "key": "S3_REGION",
+        "input": {
+          "name": "S3 region",
+          "type": "string",
+          "description": "Region passed to the S3 client.",
+          "default": "us-east-1",
+          "advanced": true
+        }
+      },
+      {
+        "key": "MAX_DURATION_SECONDS",
+        "input": {
+          "name": "Max duration (seconds)",
+          "type": "number",
+          "description": "Longest clip the worker will accept. The model is trained around 5 seconds.",
+          "min": 1,
+          "max": 5,
+          "default": 5,
+          "advanced": true
+        }
+      }
+    ]
+  }
+}

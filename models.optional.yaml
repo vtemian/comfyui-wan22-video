@@ -1,0 +1,26 @@
+# Optional Lightning LoRA pairs from the same Apache-2.0 repository as the default pair.
+# Not downloaded unless DOWNLOAD_OPTIONAL_LORAS=1. Swap them in with COMFY_LORA_HIGH
+# and COMFY_LORA_LOW. Never mix halves from different pairs.
+#
+# The 250928 high-noise file is rank 128, which is why it is larger.
+
+loras:
+  wan22_lightning_v20_high_noise:
+    url: "https://huggingface.co/lightx2v/Wan2.2-Lightning/resolve/main/Wan2.2-T2V-A14B-4steps-lora-rank64-Seko-V2.0/high_noise_model.safetensors"
+    path: "loras/wan2.2_t2v_lightx2v_4steps_lora_v2.0_high_noise.safetensors"
+    size_gb: 1.23
+
+  wan22_lightning_v20_low_noise:
+    url: "https://huggingface.co/lightx2v/Wan2.2-Lightning/resolve/main/Wan2.2-T2V-A14B-4steps-lora-rank64-Seko-V2.0/low_noise_model.safetensors"
+    path: "loras/wan2.2_t2v_lightx2v_4steps_lora_v2.0_low_noise.safetensors"
+    size_gb: 1.23
+
+  wan22_lightning_250928_high_noise:
+    url: "https://huggingface.co/lightx2v/Wan2.2-Lightning/resolve/main/Wan2.2-T2V-A14B-4steps-lora-250928/high_noise_model.safetensors"
+    path: "loras/wan2.2_t2v_lightx2v_4steps_lora_250928_high_noise_rank128.safetensors"
+    size_gb: 2.45
+
+  wan22_lightning_250928_low_noise:
+    url: "https://huggingface.co/lightx2v/Wan2.2-Lightning/resolve/main/Wan2.2-T2V-A14B-4steps-lora-250928/low_noise_model.safetensors"
+    path: "loras/wan2.2_t2v_lightx2v_4steps_lora_250928_low_noise_rank64.safetensors"
+    size_gb: 1.23

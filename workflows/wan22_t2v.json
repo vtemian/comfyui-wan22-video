@@ -1,0 +1,287 @@
+{
+  "10": {
+    "class_type": "UNETLoader",
+    "_meta": {
+      "title": "Expert high noise"
+    },
+    "inputs": {
+      "unet_name": "wan2.2_t2v_high_noise_14B_fp8_scaled.safetensors",
+      "weight_dtype": "default"
+    }
+  },
+  "11": {
+    "class_type": "UNETLoader",
+    "_meta": {
+      "title": "Expert low noise"
+    },
+    "inputs": {
+      "unet_name": "wan2.2_t2v_low_noise_14B_fp8_scaled.safetensors",
+      "weight_dtype": "default"
+    }
+  },
+  "12": {
+    "class_type": "LoraLoaderModelOnly",
+    "_meta": {
+      "title": "Lightning LoRA high noise"
+    },
+    "inputs": {
+      "lora_name": "wan2.2_t2v_lightx2v_4steps_lora_v1.1_high_noise.safetensors",
+      "strength_model": 1.0,
+      "model": [
+        "10",
+        0
+      ]
+    }
+  },
+  "13": {
+    "class_type": "LoraLoaderModelOnly",
+    "_meta": {
+      "title": "Lightning LoRA low noise"
+    },
+    "inputs": {
+      "lora_name": "wan2.2_t2v_lightx2v_4steps_lora_v1.1_low_noise.safetensors",
+      "strength_model": 1.0,
+      "model": [
+        "11",
+        0
+      ]
+    }
+  },
+  "14": {
+    "class_type": "ModelSamplingSD3",
+    "_meta": {
+      "title": "Shift high noise"
+    },
+    "inputs": {
+      "shift": 5.0,
+      "model": [
+        "12",
+        0
+      ]
+    }
+  },
+  "15": {
+    "class_type": "ModelSamplingSD3",
+    "_meta": {
+      "title": "Shift low noise"
+    },
+    "inputs": {
+      "shift": 5.0,
+      "model": [
+        "13",
+        0
+      ]
+    }
+  },
+  "20": {
+    "class_type": "CLIPLoader",
+    "_meta": {
+      "title": "Text encoder"
+    },
+    "inputs": {
+      "clip_name": "umt5_xxl_fp8_e4m3fn_scaled.safetensors",
+      "type": "wan",
+      "device": "default"
+    }
+  },
+  "21": {
+    "class_type": "VAELoader",
+    "_meta": {
+      "title": "VAE"
+    },
+    "inputs": {
+      "vae_name": "wan_2.1_vae.safetensors"
+    }
+  },
+  "30": {
+    "class_type": "CLIPTextEncode",
+    "_meta": {
+      "title": "Prompt"
+    },
+    "inputs": {
+      "text": "A slow handheld push-in across a sunlit kitchen table, steam rising from a cup of coffee.",
+      "clip": [
+        "20",
+        0
+      ]
+    }
+  },
+  "31": {
+    "class_type": "CLIPTextEncode",
+    "_meta": {
+      "title": "Negative prompt"
+    },
+    "inputs": {
+      "text": "色调艳丽，过曝，静态，细节模糊不清，字幕，风格，作品，画作，画面，静止，整体发灰，最差质量，低质量，JPEG压缩残留，丑陋的，残缺的，多余的手指，画得不好的手部，画得不好的脸部，畸形的，毁容的，形态畸形的肢体，手指融合，静止不动的画面，杂乱的背景，三条腿，背景人很多，倒着走",
+      "clip": [
+        "20",
+        0
+      ]
+    }
+  },
+  "40": {
+    "class_type": "EmptyHunyuanLatentVideo",
+    "_meta": {
+      "title": "Latent"
+    },
+    "inputs": {
+      "width": 480,
+      "height": 832,
+      "length": 81,
+      "batch_size": 1
+    }
+  },
+  "50": {
+    "class_type": "KSamplerAdvanced",
+    "_meta": {
+      "title": "Sampler high noise"
+    },
+    "inputs": {
+      "add_noise": "enable",
+      "noise_seed": 424242,
+      "steps": 4,
+      "cfg": 1.0,
+      "sampler_name": "euler",
+      "scheduler": "simple",
+      "start_at_step": 0,
+      "end_at_step": 2,
+      "return_with_leftover_noise": "enable",
+      "model": [
+        "14",
+        0
+      ],
+      "positive": [
+        "30",
+        0
+      ],
+      "negative": [
+        "31",
+        0
+      ],
+      "latent_image": [
+        "40",
+        0
+      ]
+    }
+  },
+  "51": {
+    "class_type": "KSamplerAdvanced",
+    "_meta": {
+      "title": "Sampler low noise"
+    },
+    "inputs": {
+      "add_noise": "disable",
+      "noise_seed": 424242,
+      "steps": 4,
+      "cfg": 1.0,
+      "sampler_name": "euler",
+      "scheduler": "simple",
+      "start_at_step": 2,
+      "end_at_step": 4,
+      "return_with_leftover_noise": "disable",
+      "model": [
+        "15",
+        0
+      ],
+      "positive": [
+        "30",
+        0
+      ],
+      "negative": [
+        "31",
+        0
+      ],
+      "latent_image": [
+        "50",
+        0
+      ]
+    }
+  },
+  "60": {
+    "class_type": "VAEDecodeTiled",
+    "_meta": {
+      "title": "Decode"
+    },
+    "inputs": {
+      "tile_size": 512,
+      "overlap": 64,
+      "temporal_size": 32,
+      "temporal_overlap": 8,
+      "samples": [
+        "51",
+        0
+      ],
+      "vae": [
+        "21",
+        0
+      ]
+    }
+  },
+  "70": {
+    "class_type": "RIFE VFI",
+    "_meta": {
+      "title": "Interpolate"
+    },
+    "inputs": {
+      "ckpt_name": "rife49.pth",
+      "clear_cache_after_n_frames": 10,
+      "multiplier": 2,
+      "fast_mode": true,
+      "ensemble": true,
+      "scale_factor": 1.0,
+      "dtype": "float32",
+      "torch_compile": false,
+      "batch_size": 1,
+      "frames": [
+        "60",
+        0
+      ]
+    }
+  },
+  "75": {
+    "class_type": "ImageScale",
+    "_meta": {
+      "title": "Save resize"
+    },
+    "inputs": {
+      "upscale_method": "lanczos",
+      "width": 480,
+      "height": 832,
+      "crop": "disabled",
+      "image": [
+        "70",
+        0
+      ]
+    }
+  },
+  "80": {
+    "class_type": "CreateVideo",
+    "_meta": {
+      "title": "Assemble"
+    },
+    "inputs": {
+      "fps": 32.0,
+      "images": [
+        "75",
+        0
+      ]
+    }
+  },
+  "90": {
+    "class_type": "SaveVideo",
+    "_meta": {
+      "title": "Save"
+    },
+    "inputs": {
+      "filename_prefix": "video",
+      "format": "mp4",
+      "format.codec": "h264",
+      "format.codec.encoding": "re-encode",
+      "format.codec.encoding.crf": 19.0,
+      "video": [
+        "80",
+        0
+      ]
+    }
+  }
+}

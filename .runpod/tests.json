@@ -1,0 +1,26 @@
+{
+  "tests": [
+    {
+      "name": "one_second_480p",
+      "input": {
+        "prompt": "A slow handheld push-in across a sunlit kitchen table, steam rising from a cup of coffee.",
+        "width": 480,
+        "height": 832,
+        "duration_seconds": 1,
+        "seed": 1
+      },
+      "timeout": 3600000
+    }
+  ],
+  "config": {
+    "gpuTypeId": "NVIDIA L40S",
+    "gpuCount": 1,
+    "allowedCudaVersions": ["12.8"],
+    "env": [
+      {
+        "key": "COMFY_RIFE",
+        "value": "1"
+      }
+    ]
+  }
+}
