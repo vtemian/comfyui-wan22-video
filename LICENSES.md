@@ -28,7 +28,7 @@ This is a source audit of the licenses those projects publish. It is not a legal
 | Lightning LoRA v1.1, both halves | Same Comfy-Org repository, and [lightx2v/Wan2.2-Lightning](https://huggingface.co/lightx2v/Wan2.2-Lightning) | Apache-2.0 | The lightx2v model card says the models in that repository are Apache-2.0. v1.1 is the pair the graph loads by default. |
 | Lightning LoRA v2.0 and 250928, both halves | [lightx2v/Wan2.2-Lightning](https://huggingface.co/lightx2v/Wan2.2-Lightning) | Apache-2.0 | Same repository and license as v1.1. Optional download only. The 250928 high-noise file is rank 128. Do not mix halves across pairs. |
 
-The handler modules in this directory (`handler.py`, `wan_job.py`, `wan_graph.py`, `wan_comfy.py`, `wan_mp4.py`, `wan_delivery.py`) are Apache-2.0. The license text is [LICENSE](LICENSE). The container as a whole is not, because it runs the AGPL-3.0 worker image and GPL-3.0 ComfyUI.
+The handler modules in this directory (`handler.py`, `wan_job.py`, `wan_graph.py`, `wan_comfy.py`, `wan_mp4.py`, `wan_delivery.py`) are Apache-2.0, Copyright 2026 vtemian. [LICENSE](LICENSE) is the unmodified Apache License, Version 2.0. The container as a whole is not Apache-2.0, because it runs the AGPL-3.0 worker image and GPL-3.0 ComfyUI.
 
 Publishing the image gives other people a network service that includes those programs. AGPL-3.0 has a source-offer duty for network use. The practical way to meet it is to publish this directory as its own public repository and to keep the upstream links above. Confirm that with counsel before the listing goes public if the AGPL base image is not acceptable. Rebuilding ComfyUI from the GPL sources, without the worker-comfyui image, would be a different template and was not done here.
 
